@@ -1,0 +1,7 @@
+// Package integers provides basic integer operations.
+package integers
+
+// Add returns the sum of two integers.
+func Add(x, y int) int {
+	return x + y
+}
