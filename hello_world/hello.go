@@ -1,10 +1,11 @@
 package main
 
-const (
-	englishHelloPrefix = "Hello, "
-	spanishHelloPrefix = "Hola, "
-	frenchHelloPrefix  = "Bonjour, "
-)
+
+var languagePrefixes = map[string]string{
+    "English": "Hello, ",
+    "Spanish": "Hola, ",
+    "French":  "Bonjour, ",
+}
 
 func Hello(name, language string) string {
 	if name == "" {
@@ -14,14 +15,9 @@ func Hello(name, language string) string {
 	return greetingPrefix(language) + name + "!"
 }
 
-func greetingPrefix(language string) (prefix string) {
-	switch language {
-	case "French":
-		prefix = frenchHelloPrefix
-	case "Spanish":
-		prefix = spanishHelloPrefix
-	default:
-		prefix = englishHelloPrefix
-	}
-	return
+func greetingPrefix(language string) string {
+    if prefix, ok := languagePrefixes[language]; ok {
+        return prefix
+    }
+    return languagePrefixes["English"]
 }
