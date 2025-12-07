@@ -3,8 +3,6 @@ package iteration
 
 import "strings"
 
-const repeatCount = 5
-
 // Strings in Go are immutable. So we can't modify them in place.
 //func Repeat(character string) string {
 //	var repeated string
