@@ -1,11 +1,5 @@
 # Learn Go with Tests
 
-<p align="center">
-  <img src="red-green-blue-gophers-smaller.png" />
-</p>
-
-[Art by Denise](https://twitter.com/deniseyu21)
-
 [![Go Report Card](https://goreportcard.com/badge/github.com/quii/learn-go-with-tests)](https://goreportcard.com/report/github.com/quii/learn-go-with-tests)
 
 ## Formats
@@ -23,15 +17,6 @@
 - [Türkçe](https://halilkocaoz.gitbook.io/go-programlama-dilini-ogren/)
 - [فارسی](https://go-yaad-begir.gitbook.io/go-ba-test/)
 - [Nederlands](https://bobkosse.gitbook.io/leer-go-met-tests/)
-
-## Support me
-
-I am proud to offer this resource for free, but if you wish to give some appreciation:
-
-- [Tweet me @quii](https://twitter.com/quii)
-- <a rel="me" href="https://mastodon.cloud/@quii">Mastodon</a>
-- [Buy me a coffee :coffee:](https://www.buymeacoffee.com/quii)
-- [Sponsor me on GitHub](https://github.com/sponsors/quii)
 
 ## Why
 
