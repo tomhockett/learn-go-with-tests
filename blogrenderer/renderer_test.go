@@ -5,15 +5,16 @@ import (
 	"io"
 	"testing"
 
-	"github.com/approvals/go-approval-tests"
+	approvals "github.com/approvals/go-approval-tests"
 	"github.com/tomhockett/learn-go-with-tests/blogrenderer"
 )
 
 func TestRender(t *testing.T) {
 	var (
 		aPost = blogrenderer.Post{
-			Title:       "hello world",
-			Body:        "This is a post",
+			Title: "hello world",
+			Body: `# First recipe!
+Welcome to my **amazing blog**. I am going to write about my family recipes, and make sure I write a long, irrelevant and boring story about my family before you get to the actual instructions.`,
 			Description: "This is a description",
 			Tags:        []string{"go", "tdd"},
 		}
@@ -29,6 +30,17 @@ func TestRender(t *testing.T) {
 		buf := bytes.Buffer{}
 
 		if err := postRenderer.Render(&buf, aPost); err != nil {
+			t.Fatal(err)
+		}
+
+		approvals.VerifyString(t, buf.String())
+	})
+
+	t.Run("it renders an index of posts", func(t *testing.T) {
+		buf := bytes.Buffer{}
+		posts := []blogrenderer.Post{{Title: "Hello World"}, {Title: "Hello World 2"}}
+
+		if err := postRenderer.RenderIndex(&buf, posts); err != nil {
 			t.Fatal(err)
 		}
 
