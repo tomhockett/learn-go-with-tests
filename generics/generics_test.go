@@ -15,17 +15,21 @@ func TestStack(t *testing.T) {
 
 		// add another thing, pop it back again
 		myStackOfInts.Push(456)
-		value, _ := myStackOfInts.Pop()
+		value, ok := myStackOfInts.Pop()
+		AssertTrue(t, ok)
 		AssertEqual(t, value, 456)
-		value, _ = myStackOfInts.Pop()
+		value, ok = myStackOfInts.Pop()
+		AssertTrue(t, ok)
 		AssertEqual(t, value, 123)
 		AssertTrue(t, myStackOfInts.IsEmpty())
 
 		// can get the numbers we put in as numbers, not untyped interface{}
 		myStackOfInts.Push(1)
 		myStackOfInts.Push(2)
-		firstNum, _ := myStackOfInts.Pop()
-		secondNum, _ := myStackOfInts.Pop()
+		firstNum, ok := myStackOfInts.Pop()
+		AssertTrue(t, ok)
+		secondNum, ok := myStackOfInts.Pop()
+		AssertTrue(t, ok)
 		AssertEqual(t, firstNum+secondNum, 3)
 	})
 }
