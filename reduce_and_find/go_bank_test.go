@@ -18,7 +18,7 @@ func TestBadBank(t *testing.T) {
 		return NewBalanceFor(account, transactions).Balance
 	}
 
-	AssertEqual(t, newBalanceFor(riya), 200)
-	AssertEqual(t, newBalanceFor(chris), 0)
-	AssertEqual(t, newBalanceFor(adil), 175)
+	AssertEqual(t, newBalanceFor(riya), 200.0)
+	AssertEqual(t, newBalanceFor(chris), 0.0)
+	AssertEqual(t, newBalanceFor(adil), 175.0)
 }
