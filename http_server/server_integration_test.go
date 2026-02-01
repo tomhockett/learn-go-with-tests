@@ -7,6 +7,33 @@ import (
 	"testing"
 )
 
+func TestPathValidationIntegration(t *testing.T) {
+	store := NewInMemoryPlayerStore()
+	server := PlayerServer{store}
+
+	t.Run("malformed paths don't affect store", func(t *testing.T) {
+		// Try to record wins with malformed paths
+		malformedRequests := []string{
+			"/players/",
+			"/players/Alice/extra",
+			"/other/path",
+		}
+
+		for _, path := range malformedRequests {
+			request, _ := http.NewRequest(http.MethodPost, path, nil)
+			response := httptest.NewRecorder()
+
+			server.ServeHTTP(response, request)
+			assertStatus(t, response.Code, http.StatusNotFound)
+		}
+
+		// Verify no wins were recorded
+		response := httptest.NewRecorder()
+		server.ServeHTTP(response, newGetScoreRequest("Alice"))
+		assertStatus(t, response.Code, http.StatusNotFound)
+	})
+}
+
 func TestRecordingWinsAndRetrievingThem(t *testing.T) {
 	store := NewInMemoryPlayerStore()
 	server := PlayerServer{store}

@@ -16,7 +16,15 @@ type PlayerServer struct {
 }
 
 func (p *PlayerServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if !strings.HasPrefix(r.URL.Path, "/players/") {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 	player := strings.TrimPrefix(r.URL.Path, "/players/")
+	if player == "" || strings.Contains(player, "/") {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 
 	switch r.Method {
 	case http.MethodPost:

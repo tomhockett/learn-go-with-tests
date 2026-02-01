@@ -22,7 +22,52 @@ func (s *StubPlayerStore) RecordWin(name string) {
 	s.winCalls = append(s.winCalls, name)
 }
 
-// server_test.go
+func TestPathValidation(t *testing.T) {
+	store := StubPlayerStore{
+		map[string]int{
+			"Alice": 15,
+		},
+		nil,
+	}
+	server := &PlayerServer{&store}
+
+	t.Run("returns 404 for empty player name", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodGet, "/players/", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusNotFound)
+	})
+
+	t.Run("returns 404 for paths with additional slashes", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodGet, "/players/Alice/extra", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusNotFound)
+	})
+
+	t.Run("returns 404 for non-player paths", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodGet, "/other/path", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusNotFound)
+	})
+
+	t.Run("POST requests also validate paths", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodPost, "/players/Alice/extra", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusNotFound)
+	})
+}
+
 func TestGETPlayers(t *testing.T) {
 	store := StubPlayerStore{
 		map[string]int{
