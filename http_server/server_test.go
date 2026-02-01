@@ -90,6 +90,44 @@ func TestStoreWins(t *testing.T) {
 	})
 }
 
+func TestGETPlayersEdgeCases(t *testing.T) {
+	store := StubPlayerStore{
+		map[string]int{
+			"Alice": 15,
+			"Bob":   0,
+		},
+		nil,
+	}
+	server := &PlayerServer{&store}
+
+	t.Run("returns player with zero score as 404", func(t *testing.T) {
+		request := newGetScoreRequest("Bob")
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusNotFound)
+	})
+
+	t.Run("handles empty player name", func(t *testing.T) {
+		request := newGetScoreRequest("")
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusNotFound)
+	})
+
+	t.Run("returns 405 for unsupported HTTP methods", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodDelete, "/players/Alice", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusMethodNotAllowed)
+	})
+}
+
 func newPostWinRequest(name string) *http.Request {
 	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/players/%s", name), nil)
 	return req

@@ -23,6 +23,8 @@ func (p *PlayerServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		p.processWin(w, player)
 	case http.MethodGet:
 		p.showScore(w, player)
+	default:
+		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
 }
 
@@ -31,6 +33,7 @@ func (p *PlayerServer) showScore(w http.ResponseWriter, player string) {
 
 	if score == 0 {
 		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	fmt.Fprint(w, score)
